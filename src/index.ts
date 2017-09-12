@@ -84,7 +84,7 @@ export function create(db:AnydbSql, tasks:string | MigrationTask[]) {
             .getWithin(tx).then(mig => {
                 if (!mig) throw new Error("No migrations available to rollback")
                 var undoMigration = _.find(list, item => item.name == mig.version)
-                return runSingle(tx, "down", undoMigration)
+                return runSingle(tx, "down", undoMigration).then(_ => console.log('Rolled back:', undoMigration.name));
             }))
     }
 
